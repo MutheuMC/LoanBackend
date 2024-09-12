@@ -13,13 +13,13 @@ const { Loan, RepaymentSchedule, Applicant, User } = require('../models');
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user:'cheldeanmutheu1@gmail.com', 
-      pass: 'krrn hlmk cysl mhyx' 
+      user:'', 
+      pass: '' 
     }
   });
 
 // Configure Twilio client
-const twilioClient = twilio('AC859cf2a9a00a2de1e6249b4cbc579ddb', '60806d7328b6554ee534a35d2f4395ea');
+const twilioClient = twilio('', '');
 
 async function sendNotification(applicant, repaymentSchedule, loan) {
   const message = `Dear ${applicant.fullName}, this is a reminder that your loan payment of ${repaymentSchedule.amountDue} is due tomorrow.`;
