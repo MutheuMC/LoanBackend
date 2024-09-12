@@ -5,6 +5,7 @@ require('dotenv').config();
 const verifyToken = require('./middleware/verifyToken');
 const UserRoutes = require('./routes/user')
 const LoanRoutes = require('./routes/loan')
+const ApplicantRoutes =require('./routes/applicants')
 
 
 
@@ -17,6 +18,8 @@ app.use(express.json())
 
 app.use('/users', UserRoutes);
 app.use('/loans', LoanRoutes);
+app.use('/applicants', ApplicantRoutes);
+
 
 
 app.get("/", (req, res)=>{
