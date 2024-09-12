@@ -1,3 +1,4 @@
+const { where } = require('sequelize');
 const { Loan } = require('../models');
 
 module.exports.getLoans = async (req, res) => {
@@ -9,14 +10,15 @@ module.exports.getLoans = async (req, res) => {
   }
 };
 
-module.exports.createLoan = async (req, res) => {
-  try {
-    const newLoan = await Loan.create(req.body);
-    res.status(201).json(newLoan);
-  } catch (error) {
-    res.status(400).json({ message: 'Error creating loan', error: error.message });
+module.exports.getLoansByApplicantId = async (req, res)=>{
+  const {applicantId} = req.params
+  try{
+    const loans = await Loan.findAll({where :{ applicantId : applicantId}})
+
+  }catch (error) {
+    res.status(500).json({ message: 'Error fetching loans', error: error.message });
   }
-};
+}
 
 module.exports.getLoanById = async (req, res) => {
   try {

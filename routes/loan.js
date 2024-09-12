@@ -5,7 +5,7 @@ const loanCalcController = require('../controllers/loanCalculator')
 const paymentController = require('../controllers/loanPaymentStatement')
 
 router.get('/', loanController.getLoans);
-router.post('/', loanController.createLoan);
+router.get('/loans/:applicantId', loanController.getLoansByApplicantId);
 router.get('/:id', loanController.getLoanById);
 router.patch('/:id', loanController.updateLoan);
 router.delete('/:id', loanController.deleteLoan);
