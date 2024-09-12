@@ -1,7 +1,10 @@
 const express = require('express')
 const cors = require('cors')
 require('dotenv').config();
-const UserRoutes = require('../Loan/routes/user')
+
+const verifyToken = require('./middleware/verifyToken');
+const UserRoutes = require('./routes/user')
+const LoanRoutes = require('./routes/loan')
 
 
 
@@ -13,6 +16,8 @@ app.use(cors());
 app.use(express.json())
 
 app.use('/users', UserRoutes);
+app.use('/loans', LoanRoutes);
+
 
 app.get("/", (req, res)=>{
     res.send('Hello world')

@@ -2,7 +2,7 @@ const { Loan, RepaymentSchedule } = require('../models');
 const { INTEREST_RATE, MAX_LOAN_TERM } = require('../config/loanConfig');
 const moment = require('moment');
 
-exports.calculateLoan = async (req, res) => {
+module.exports.calculateLoan = async (req, res) => {
   try {
     const { loanAmount, loanTerm, paymentFrequency } = req.body;
     
@@ -94,7 +94,7 @@ exports.calculateLoan = async (req, res) => {
   }
 };
 
-exports.createLoan = async (req, res) => {
+module.exports.createLoan = async (req, res) => {
   try {
     const { loanAmount, loanTerm, paymentFrequency, applicantId } = req.body;
     
