@@ -15,6 +15,12 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
       allowNull: false
     },
+    uuid: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
+      allowNull: false
+    },
     loanId: {
       type: DataTypes.UUID,
       allowNull: false
@@ -27,8 +33,13 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false
     },
+    amountPaid: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: false,
+      defaultValue: 0
+    },
     paymentStatus: {
-      type: DataTypes.ENUM('pending', 'paid', 'overdue'),
+      type: DataTypes.ENUM('pending', 'paid'),
       allowNull: false,
       defaultValue: 'pending'
     }

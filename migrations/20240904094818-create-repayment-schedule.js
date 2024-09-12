@@ -2,6 +2,8 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
+    await queryInterface.sequelize.query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";')
+
     await queryInterface.sequelize.query(`
       CREATE TYPE "enum_RepaymentSchedules_paymentStatus" AS ENUM('pending', 'paid', 'overdue');
     `);
@@ -11,6 +13,12 @@ module.exports = {
         primaryKey: true,
         autoIncrement: true,
         allowNull: false
+      },
+      uuid: {
+        primaryKey: true,
+        allowNull: false,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.literal('uuid_generate_v4()'),
       },
       loanId: {
         type: Sequelize.UUID,

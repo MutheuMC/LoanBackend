@@ -5,10 +5,10 @@ module.exports = (sequelize, DataTypes) => {
   class Applicant extends Model {
     static associate(models) {
       // define association here
-      this.belongsTo(models.User, { foreignKey: 'UserID' });
-      this.hasMany(models.Loan, { foreignKey: 'ApplicantID' });
+      this.belongsTo(models.User, { foreignKey: 'userId' });
+      this.hasMany(models.Loan, { foreignKey: 'applicantId' });
       // this.hasMany(models.LoanRequest, { foreignKey: 'ApplicantID' });
-      this.hasMany(models.Applicant, { foreignKey: 'UserID' });
+      // this.hasMany(models.Applicant, { foreignKey: 'userId' });
     }
   }
   
@@ -24,64 +24,64 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       allowNull: false
     },
-    UserID: {
+    userId: {
       type: DataTypes.UUID,
       allowNull: false
     },
-    FullName: {
+    fullName: {
       type: DataTypes.STRING,
       allowNull: false
     },
-    PhoneNumber: {
+    phoneNumber: {
       type: DataTypes.STRING,
       allowNull: false
     },
-    IDNumber: {
+    idNumber: {
       type: DataTypes.STRING,
       allowNull: false
     },
-    MaritalStatus: {
+    maritalStatus: {
       type: DataTypes.ENUM('Single', 'Married', 'Divorced', 'Widowed'),
       allowNull: false
     },
-    SpouseName: {
+    spouseName: {
       type: DataTypes.STRING
     },
-    SpouseIDNumber: {
+    spouseIdNumber: {
       type: DataTypes.STRING
     },
-    SpousePhoneNumber: {
+    spousePhoneNumber: {
       type: DataTypes.STRING
     },
-    Village: {
+    village: {
       type: DataTypes.STRING,
       allowNull: false
     },
-    Location: {
+    location: {
       type: DataTypes.STRING,
       allowNull: false
     },
-    SubCounty: {
+    subCounty: {
       type: DataTypes.STRING,
       allowNull: false
     },
-    County: {
+    county: {
       type: DataTypes.STRING,
       allowNull: false
     },
-    BusinessName: {
+    businessName: {
       type: DataTypes.STRING,
       allowNull: false
     },
-    BusinessLocation: {
+    businessLocation: {
       type: DataTypes.STRING,
       allowNull: false
     },
-    NextOfKin: {
+    nextOfKin: {
       type: DataTypes.STRING,
       allowNull: false
     },
-    NextOfKinPhone: {
+    nextOfKinPhone: {
       type: DataTypes.STRING,
       allowNull: false
     }
