@@ -12,8 +12,14 @@ module.exports.getLoans = async (req, res) => {
 
 module.exports.getLoansByApplicantId = async (req, res)=>{
   const {applicantId} = req.params
+  console.log(applicantId)
   try{
-    const loans = await Loan.findAll({where :{ applicantId : applicantId}})
+    const loans = await Loan.findAll({where : {applicantId: applicantId}})
+    if(loans.le){
+    res.status(400).json({ message: 'No loans', error: error.message });
+
+    }
+    res.status(200).json(loans)
 
   }catch (error) {
     res.status(500).json({ message: 'Error fetching loans', error: error.message });

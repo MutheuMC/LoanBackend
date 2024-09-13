@@ -53,11 +53,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     firstPaymentDate: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: true
     },
     lastPaymentDate: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: true
     },
     penaltyAmount: {
       type: DataTypes.DECIMAL,

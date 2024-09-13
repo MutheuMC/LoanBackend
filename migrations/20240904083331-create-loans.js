@@ -42,11 +42,11 @@ module.exports = {
       },
       firstPaymentDate: {
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: true
       },
       lastPaymentDate: {
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: true
       },
       penaltyAmount: {
         type: Sequelize.DECIMAL(10, 2),

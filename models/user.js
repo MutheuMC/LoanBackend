@@ -42,13 +42,18 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    city: {
-      type: DataTypes.STRING,
-    },
     role: {
       type: DataTypes.ENUM('admin', 'user', 'manager'),
       allowNull: false,
       defaultValue: 'user',
+    },
+    resetToken: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    resetTokenExpiry: {
+      type: DataTypes.DATE,
+      allowNull: true
     }
   }, {
     sequelize,
