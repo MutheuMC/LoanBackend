@@ -69,6 +69,10 @@ module.exports = {
         type: Sequelize.DECIMAL(10, 2),
         allowNull: false
       },
+      collateralFilePath: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
       defaultStatus: {
         type: Sequelize.BOOLEAN,
         defaultValue: false

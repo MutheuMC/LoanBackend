@@ -1,5 +1,7 @@
-const { where } = require('sequelize');
+
 const { Loan } = require('../models');
+const upload = require('../middleware/fileUpload');
+
 
 module.exports.getLoans = async (req, res) => {
   try {
@@ -9,6 +11,21 @@ module.exports.getLoans = async (req, res) => {
     res.status(500).json({ message: 'Error fetching loans', error: error.message });
   }
 };
+module.exports.createLoan = [
+  upload.single('collateralFile'), // 'collateralFile' should match the name attribute in your form
+  async (req, res) => {
+    try {
+      const loanData = req.body;
+      if (req.file) {
+        loanData.collateralFilePath = req.file.path;
+      }
+      const newLoan = await Loan.create(loanData);
+      res.status(201).json(newLoan);
+    } catch (error) {
+      res.status(400).json({ message: 'Error creating loan', error: error.message });
+    }
+  }
+];
 
 module.exports.getLoansByApplicantId = async (req, res)=>{
   const {applicantId} = req.params
