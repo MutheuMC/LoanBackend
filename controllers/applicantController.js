@@ -157,8 +157,8 @@ module.exports.updateLoanDisbursement = async (req, res) => {
     loan.disbursed = true;
 
     // Update loan with calculated values
-    loan.interestAmount = totalInterest;
-    loan.interestRate = INTEREST_RATE / 100;
+    // loan.interestAmount = totalInterest;
+    // loan.interestRate = INTEREST_RATE / 100;
     // loan.balanceDue  = parseFloat((loan.loanAmount + totalInterest).toFixed(2));
     loan.firstPaymentDate = firstPaymentDate.toDate();
     loan.lastPaymentDate = lastPaymentDate.toDate();

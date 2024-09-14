@@ -1,4 +1,4 @@
-const { runManualCheck } = require('./loanRepaymentNotifications');
+const { runManualCheck } = require('./controllers/loanRepaymentNotifications');
 
 // Trigger the manual repayment check
 runManualCheck()

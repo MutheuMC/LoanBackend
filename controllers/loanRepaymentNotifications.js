@@ -9,25 +9,32 @@ const twilio = require('twilio');
 const { Loan, RepaymentSchedule, Applicant, User } = require('../models');
 
 
+console.log('Twilio Account SID:', process.env.TWILIO_ACCOUNT_SID);
+console.log('Twilio Auth Token:', process.env.TWILIO_AUTH_TOKEN);
+
 
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user:'', 
-      pass: '' 
-    }
-  });
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASSWORD,
+  },
+  tls: {
+    rejectUnauthorized: false,
+  },
+});
 
 // Configure Twilio client
-const twilioClient = twilio('', '');
+const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, '');
 
 async function sendNotification(applicant, repaymentSchedule, loan) {
   const message = `Dear ${applicant.fullName}, this is a reminder that your loan payment of ${repaymentSchedule.amountDue} is due tomorrow.`;
 
   // Send email
+  console.log(applicant.User.email)
   await transporter.sendMail({
-    from: 'cheldeanmutheu1@gmail.com',
-    to: applicant.User.email,
+    from: process.env.EMAIL_USER,
+    to: 'chelddymusingila@gmail.com',
     subject: 'Loan Repayment Reminder',
     text: message,
   });
@@ -61,9 +68,17 @@ async function checkRepayments() {
     }],
   });
 
+  console.log(`Found ${dueRepayments.length} due repayments for tomorrow.`);
+  console.log('Twilio Account SID:', process.env.TWILIO_ACCOUNT_SID);
+console.log('Twilio Auth Token:', process.env.TWILIO_AUTH_TOKEN);
+
   for (const repayment of dueRepayments) {
+    console.log(`Processing repayment for applicant: ${repayment.Loan.Applicant.fullName}`);
     await sendNotification(repayment.Loan.Applicant, repayment, repayment.Loan);
+
   }
+
+  console.log('Finished processing all due repayments.');
 }
 
 // Schedule the job to run daily at midnight
