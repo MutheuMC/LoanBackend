@@ -1,5 +1,5 @@
 
-const { Loan } = require('../models');
+const { Loan , Applicant} = require('../models');
 const upload = require('../middleware/fileUpload');
 
 
@@ -11,6 +11,7 @@ module.exports.getLoans = async (req, res) => {
     res.status(500).json({ message: 'Error fetching loans', error: error.message });
   }
 };
+
 module.exports.createLoan = [
   upload.single('collateralFile'), // 'collateralFile' should match the name attribute in your form
   async (req, res) => {
@@ -53,6 +54,22 @@ module.exports.getLoanById = async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({ message: 'Error fetching loan', error: error.message });
+  }
+};
+
+
+module.exports.getLoanRequests = async (req, res) => {
+  try {
+    // console.log("running")
+    const requests = await Loan.findAll({
+      where: { approvalStatus: 'pending' },
+      include: [{
+        model: Applicant,
+      }]
+    });
+    res.status(200).json(requests);
+  } catch (error) {
+    res.status(400).json({ message: 'Error getting loan requests', error: error.message });
   }
 };
 

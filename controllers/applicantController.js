@@ -115,18 +115,12 @@ module.exports.updateLoanDisbursement = async (req, res) => {
       return res.status(404).json({ message: 'Loan not found' });
     }
 
-    if (loan.disbursed !== 'false') {
+    if (loan.disbursed !== false) {
       return res.status(400).json({ message: 'Loan has already been disbursed' });
     }
 
-    // Update loan with disbursement information
-    loan.payType = payType;
-    loan.transactionNumber = transactionNumber;
-    loan.dateDisbursed = dateDisbursed;
-    loan.status = 'approved';
-    loan.disbursed = 'true';
 
-    await loan.save({ transaction });
+
 
     // Calculate repayment schedule
     const periodsPerYear = loan.paymentFrequency === 'weekly' ? 52 : (loan.paymentFrequency === 'bi-weekly' ? 26 : 12);
@@ -155,10 +149,17 @@ module.exports.updateLoanDisbursement = async (req, res) => {
         break;
     }
 
+    // Update loan with disbursement information
+    loan.payType = payType;
+    loan.transactionNumber = transactionNumber;
+    loan.dateDisbursed = dateDisbursed;
+    loan.approvalStatus = 'approved';
+    loan.disbursed = true;
+
     // Update loan with calculated values
     loan.interestAmount = totalInterest;
     loan.interestRate = INTEREST_RATE / 100;
-    loan.balanceDue = loan.loanAmount + totalInterest;
+    // loan.balanceDue  = parseFloat((loan.loanAmount + totalInterest).toFixed(2));
     loan.firstPaymentDate = firstPaymentDate.toDate();
     loan.lastPaymentDate = lastPaymentDate.toDate();
 

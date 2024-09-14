@@ -64,7 +64,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     balanceDue: {
-      type: DataTypes.DECIMAL,
+      type: DataTypes.DECIMAL(5,10),
       allowNull: false
     },
     paymentFrequency: {
@@ -95,7 +95,7 @@ module.exports = (sequelize, DataTypes) => {
     // Newly added attributes
     payType: {
       type: DataTypes.ENUM('Bank', 'Mpesa', 'Cash'),
-      allowNull: false
+      allowNull: true
     },
     transactionNumber: {
       type: DataTypes.STRING,
@@ -115,11 +115,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: false
     },
-    status: {
-      type: DataTypes.ENUM('active', 'closed', 'defaulted'),
-      allowNull: false,
-      defaultValue: 'active'
-    }
+    // status: {
+    //   type: DataTypes.ENUM('active', 'closed', 'defaulted'),
+    //   allowNull: false,
+    //   defaultValue: 'active'
+    // }
   }, {
     sequelize,
     modelName: 'Loan',

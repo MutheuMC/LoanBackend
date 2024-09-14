@@ -13,12 +13,16 @@ router.get('/:id', loanController.getLoanById);
 router.patch('/:id', loanController.updateLoan);
 router.delete('/:id', loanController.deleteLoan);
 
+
 router.post('/updateDisbursment/:loanId', applicantController.updateLoanDisbursement)
 router.post('/calculate', loanCalcController.calculateLoan)
 router.post('/payment/:loanId', paymentController.processPayment)
 router.get('/statement/:loanId', paymentController.generateLoanStatement)
 
 
+//admin routes
+
+router.get('/admin/getLoanRequests', loanController.getLoanRequests)
 
 
 
