@@ -10,11 +10,12 @@ module.exports = {
     await queryInterface.createTable('RepaymentSchedules', {
       id: {
         type: Sequelize.INTEGER,
-        primaryKey: true,
+        // primaryKey: true,
         autoIncrement: true,
         allowNull: false
       },
       uuid: {
+        unique:true,
         primaryKey: true,
         allowNull: false,
         type: Sequelize.UUID,

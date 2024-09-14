@@ -28,17 +28,43 @@ module.exports = {
         type: Sequelize.DECIMAL(10, 2),
         allowNull: false
       },
-      interestAmount: {
-        type: Sequelize.DECIMAL(10, 2),
-        allowNull: false
+      loanTerm: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        comment: 'Loan term in months'
       },
       interestRate: {
         type: Sequelize.DECIMAL(5, 4),
         allowNull: false
       },
+      interestAmount: {
+        type: Sequelize.DECIMAL(10, 2),
+        allowNull: false
+      },
+      paymentFrequency: {
+        type: Sequelize.ENUM('weekly', 'bi-weekly', 'monthly'),
+        allowNull: false
+      },
       dateBorrowed: {
         type: Sequelize.DATE,
         allowNull: false
+      },
+      disbursed:{
+      type: Sequelize.BOOLEAN,
+      allowNull: false,
+      defaultValue: false, // Set default value to false
+      },
+      dateDisbursed:{
+        type: Sequelize.DATE,
+        allowNull: true,
+      },
+      payType:{
+        type: Sequelize.ENUM('Bank', 'Mpesa', 'Cash'),
+        allowNull: false
+      },
+      transactionNumber:{
+        type: Sequelize.STRING,
+        allowNull: true,
       },
       firstPaymentDate: {
         type: Sequelize.DATE,
@@ -48,21 +74,12 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: true
       },
-      penaltyAmount: {
-        type: Sequelize.DECIMAL(10, 2),
-        allowNull: false,
-        defaultValue: 0
-      },
       balanceDue: {
         type: Sequelize.DECIMAL(10, 2),
         allowNull: false
       },
-      paymentFrequency: {
-        type: Sequelize.ENUM('weekly', 'bi-weekly', 'monthly'),
-        allowNull: false
-      },
       collateralType: {
-        type: Sequelize.ENUM('property', 'vehicle', 'savings', 'other'),
+        type: Sequelize.ENUM('property', 'vehicle', 'savings', 'title_deed', 'payslip', 'logbook'),
         allowNull: false
       },
       collateralValue: {
@@ -73,14 +90,19 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true
       },
+      penaltyAmount: {
+        type: Sequelize.DECIMAL(10, 2),
+        allowNull: false,
+        defaultValue: 0
+      },
       defaultStatus: {
         type: Sequelize.BOOLEAN,
         defaultValue: false
       },
-      loanTerm: {
-        type: Sequelize.INTEGER,
+      approvalStatus:{
+        type: Sequelize.ENUM('pending', 'approved', 'rejected'),
         allowNull: false,
-        comment: 'Loan term in months'
+        defaultValue: 'pending', 
       },
       createdAt: {
         allowNull: false,

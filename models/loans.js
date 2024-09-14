@@ -72,7 +72,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     collateralType: {
-      type: DataTypes.ENUM('property', 'vehicle', 'savings', 'other'),
+      type: DataTypes.ENUM('property', 'vehicle', 'savings', 'title_deed', 'payslip', 'logbook'),
       allowNull: false
     },
     collateralValue: {
@@ -91,30 +91,39 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
       comment: 'Loan term in months'
+    },
+    // Newly added attributes
+    payType: {
+      type: DataTypes.ENUM('Bank', 'Mpesa', 'Cash'),
+      allowNull: false
+    },
+    transactionNumber: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    dateDisbursed: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
+    approvalStatus: {
+      type: DataTypes.ENUM('pending', 'approved', 'rejected'),
+      allowNull: false,
+      defaultValue: 'pending'
+    },
+    disbursed: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
+    },
+    status: {
+      type: DataTypes.ENUM('active', 'closed', 'defaulted'),
+      allowNull: false,
+      defaultValue: 'active'
     }
   }, {
     sequelize,
     modelName: 'Loan',
-    hooks: {
-      beforeCreate: (loan, options) => {
-        loan.dateBorrowed = new Date();
-        loan.firstPaymentDate = moment(loan.dateBorrowed).add(1, 'month').toDate();
-        
-        let lastPaymentDate;
-        switch(loan.paymentFrequency) {
-          case 'weekly':
-            lastPaymentDate = moment(loan.firstPaymentDate).add(loan.loanTerm * 4, 'weeks');
-            break;
-          case 'bi-weekly':
-            lastPaymentDate = moment(loan.firstPaymentDate).add(loan.loanTerm * 2, 'weeks');
-            break;
-          case 'monthly':
-            lastPaymentDate = moment(loan.firstPaymentDate).add(loan.loanTerm, 'months');
-            break;
-        }
-        loan.lastPaymentDate = lastPaymentDate.toDate();
-      }
-    }
+ 
   });
   
   return Loan;

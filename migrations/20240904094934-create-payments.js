@@ -27,11 +27,11 @@ module.exports = {
         onDelete: 'CASCADE'
       },
       repaymentScheduleId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         allowNull: false,
         references: {
           model: 'RepaymentSchedules',
-          key: 'id'
+          key: 'uuid'
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
