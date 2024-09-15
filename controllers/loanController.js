@@ -58,16 +58,37 @@ module.exports.getLoanById = async (req, res) => {
 };
 
 
+const path = require('path');
+
 module.exports.getLoanRequests = async (req, res) => {
   try {
-    // console.log("running")
     const requests = await Loan.findAll({
       where: { approvalStatus: 'pending' },
       include: [{
         model: Applicant,
-      }]
+      }],
+      attributes: {
+        include: ['collateralFilePath']
+      }
     });
-    res.status(200).json(requests);
+
+    // Transform the data to include correct URL for collateralFilePath
+    const transformedRequests = requests.map(request => {
+      const plainRequest = request.get({ plain: true });
+      if (plainRequest.collateralFilePath) {
+        // Extract just the filename from the path
+        const fileName = path.basename(plainRequest.collateralFilePath);
+        
+        // Construct the correct URL
+        plainRequest.collateralFileUrl = `${req.protocol}://${req.get('host')}/uploads/${fileName}`;
+        
+        // Optionally, update the collateralFilePath to the correct value
+        plainRequest.collateralFilePath = `uploads/${fileName}`;
+      }
+      return plainRequest;
+    });
+
+    res.status(200).json(transformedRequests);
   } catch (error) {
     res.status(400).json({ message: 'Error getting loan requests', error: error.message });
   }

@@ -21,6 +21,10 @@ app.use('/loans', LoanRoutes);
 app.use('/applicants', ApplicantRoutes);
 
 
+app.use('/uploads', express.static('path/to/your/uploads/directory'));
+
+
+
 
 app.get("/", (req, res)=>{
     res.send('Hello world')

@@ -50,6 +50,7 @@ module.exports.createApplicant = [
       // Handle file upload
       let collateralFilePath = null;
       if (req.file) {
+        console.log("there is a file")
         collateralFilePath = req.file.path;
       }
 
