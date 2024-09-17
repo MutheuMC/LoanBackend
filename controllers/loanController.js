@@ -1,6 +1,8 @@
 
-const { Loan , Applicant} = require('../models');
 const upload = require('../middleware/fileUpload');
+const { Applicant, Loan, RepaymentSchedule, Payment } = require('../models');
+const { Op } = require('sequelize');
+
 
 
 module.exports.getLoans = async (req, res) => {
@@ -28,21 +30,71 @@ module.exports.createLoan = [
   }
 ];
 
-module.exports.getLoansByApplicantId = async (req, res)=>{
-  const {applicantId} = req.params
-  console.log(applicantId)
-  try{
-    const loans = await Loan.findAll({where : {applicantId: applicantId}})
-    if(loans.le){
-    res.status(400).json({ message: 'No loans', error: error.message });
 
+
+module.exports.getLoansByUserId = async (req, res) => {
+  const { userId } = req.params;
+  console.log(userId);
+  try {
+    const applicants = await Applicant.findAll({ 
+      where: { 
+        userId: {
+          [Op.eq]: userId
+        }
+      },
+      include: [{
+        model: Loan,
+        include: [{
+          model: RepaymentSchedule
+        }]
+      }]
+    });
+
+    if (!applicants || applicants.length === 0) {
+      return res.status(404).json({ message: 'No applicants found for this user' });
     }
-    res.status(200).json(loans)
 
-  }catch (error) {
+    const loans = applicants.flatMap(applicant => applicant.Loans);
+
+    if (loans.length === 0) {
+      return res.status(404).json({ message: 'No loans found for this user' });
+    }
+
+    const processedLoans = loans.map(loan => {
+      const loanData = loan.get({ plain: true });
+      
+      // Process RepaymentSchedules
+      loanData.repaymentSchedules = loan.RepaymentSchedules.map(schedule => ({
+        id: schedule.id,
+        repaymentDate: schedule.repaymentDate,
+        amountDue: schedule.amountDue,
+        amountPaid: schedule.amountPaid,
+        paymentStatus: schedule.paymentStatus
+      }));
+
+      // Calculate total amount paid and total amount due
+      loanData.totalAmountPaid = loanData.repaymentSchedules.reduce((sum, schedule) => sum + Number(schedule.amountPaid), 0);
+      loanData.totalAmountDue = loanData.repaymentSchedules.reduce((sum, schedule) => sum + Number(schedule.amountDue), 0);
+
+      // Calculate upcoming payments
+      const now = new Date();
+      loanData.upcomingPayments = loanData.repaymentSchedules
+        .filter(schedule => new Date(schedule.repaymentDate) > now && schedule.paymentStatus === 'pending')
+        .map(schedule => ({
+          repaymentDate: schedule.repaymentDate,
+          amountDue: schedule.amountDue
+        }));
+
+      return loanData;
+    });
+
+    res.status(200).json(processedLoans);
+
+  } catch (error) {
+    console.error('Error fetching loans:', error);
     res.status(500).json({ message: 'Error fetching loans', error: error.message });
   }
-}
+};
 
 module.exports.getLoanById = async (req, res) => {
   try {

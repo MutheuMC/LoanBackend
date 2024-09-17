@@ -8,7 +8,7 @@ const applicantController = require('../controllers/applicantController')
 
 
 router.get('/', loanController.getLoans);
-router.get('/loans/:applicantId', loanController.getLoansByApplicantId);
+router.get('/loans/:userId', loanController.getLoansByUserId);
 router.get('/:id', loanController.getLoanById);
 router.patch('/:id', loanController.updateLoan);
 router.delete('/:id', loanController.deleteLoan);
