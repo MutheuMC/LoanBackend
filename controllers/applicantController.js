@@ -103,6 +103,38 @@ module.exports.createApplicant = [
     }
   }
 ];
+module.exports.updateApprovalStatus = async (req, res) => {
+  const { loanId } = req.params;
+  const { status } = req.body; // status sent in request body
+
+  // Ensure the provided status is one of the allowed ENUM values
+  const allowedStatuses = ['pending', 'approved', 'rejected'];
+  
+  if (!allowedStatuses.includes(status)) {
+    return res.status(400).json({ message: 'Invalid approval status' });
+  }
+
+  try {
+    const loan = await Loan.findByPk(loanId);
+    
+    if (!loan) {
+      return res.status(404).json({ message: 'Loan not found' });
+    }
+
+    // Update the loan's approval status
+    loan.approvalStatus = status;
+    await loan.save();
+
+    return res.status(200).json({
+      message: 'Loan approval status updated successfully',
+      loan,
+    });
+
+  } catch (error) {
+    console.error('Error updating loan approval status:', error);
+    return res.status(500).json({ message: 'Server error' });
+  }
+};
 
 
 module.exports.updateLoanDisbursement = async (req, res) => {
@@ -154,7 +186,7 @@ module.exports.updateLoanDisbursement = async (req, res) => {
     loan.payType = payType;
     loan.transactionNumber = transactionNumber;
     loan.dateDisbursed = dateDisbursed;
-    loan.approvalStatus = 'approved';
+    // loan.approvalStatus = 'approved';
     loan.disbursed = true;
 
     // Update loan with calculated values

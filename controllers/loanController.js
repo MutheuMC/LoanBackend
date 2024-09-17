@@ -2,6 +2,7 @@
 const upload = require('../middleware/fileUpload');
 const { Applicant, Loan, RepaymentSchedule, Payment } = require('../models');
 const { Op } = require('sequelize');
+const path = require('path');
 
 
 
@@ -110,7 +111,7 @@ module.exports.getLoanById = async (req, res) => {
 };
 
 
-const path = require('path');
+
 
 module.exports.getLoanRequests = async (req, res) => {
   try {

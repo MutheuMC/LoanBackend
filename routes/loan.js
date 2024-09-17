@@ -15,6 +15,8 @@ router.delete('/:id', loanController.deleteLoan);
 
 
 router.post('/updateDisbursment/:loanId', applicantController.updateLoanDisbursement)
+router.post('/approval/:loanId', applicantController.updateApprovalStatus)
+
 router.post('/calculate', loanCalcController.calculateLoan)
 router.post('/payment/:loanId', paymentController.processPayment)
 router.get('/statement/:loanId', paymentController.generateLoanStatement)
